@@ -66,6 +66,8 @@ const Cart = () => {
                     setDecrement={setDecrement}
                     setIncrement={setIncrement}
                   />
+
+                  
                 </TableCell>
                 <TableCell>
                   <p>
