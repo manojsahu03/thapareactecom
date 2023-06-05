@@ -1,7 +1,114 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useProductContext } from "./ProductContext";
+import PageNavigation from "./components/PageNavigation";
+import FormatePrice from "./Helper/FormatePrice";
+// import { Star } from "@mui/icons-material";
+import MyImage from "./components/MyImage";
+import { Box, Container, Typography } from "@mui/material";
+import { MdSecurity } from "react-icons/md";
+import { TbTruckDelivery, TbReplace } from "react-icons/tb";
+import Star from "./Helper/Star";
+import AddToCart from "./components/AddToCart";
+import { Button } from "./styles/Button";
+import { NavLink } from "react-router-dom";
+const API = "https://api.pujakaitem.com/api/products";
+const SingleProduct = () => {
+  const { getSingleproduct, isSingleLoading, singleproduct } =
+    useProductContext();
+  const { id } = useParams();
 
-return <Wrapper></Wrapper>;
+  const {
+    id: alias,
+    name,
+    company,
+    price,
+    description,
+    category,
+    stock,
+    stars,
+    reviews,
+    image,
+  } = singleproduct;
+  console.log(name);
+  // console.log(id);
+  console.log(company);
+  useEffect(() => {
+    getSingleproduct(`${API}?id=${id}`);
+  }, []);
 
+  return (
+    <Box>
+      <Box marginBottom="10px">
+        <PageNavigation title={name} />
+      </Box>
+
+      <Box display="flex" justifyContent="space-between">
+        <Box>
+          <MyImage image={image} />
+        </Box>
+        <Box>
+          <Typography variant="h3">{name}</Typography>
+          <Star stars={stars} reviews={reviews} style={{ color: "orange" }} />
+          <Typography variant="h5">
+            MRP :
+            <del>
+              <FormatePrice price={price + 250000} />
+            </del>
+          </Typography>
+          <Typography variant="h4" sx={{ color: "rgb(98 84 243)" }}>
+            Deal of the Day:
+            <FormatePrice price={price} />
+          </Typography>
+          <Typography
+            marginBottom="10px"
+            marginTop="10px"
+            style={{ fontSize: "14px" }}
+          >
+            {description}
+          </Typography>
+          <Box marginBottom="10px" marginTop="10px" sx={{ display: "flex" }}>
+            <Box sx={{ marginRight: "20px" }}>
+              <TbTruckDelivery fontSize="20px" />
+              <Typography>Free Delivery</Typography>
+            </Box>
+            <Box sx={{ marginRight: "20px" }}>
+              <TbReplace fontSize="20px" />
+              <Typography>30 Days Replacement</Typography>
+            </Box>
+            <Box sx={{ marginRight: "20px" }}>
+              <TbTruckDelivery fontSize="20px" />
+              <Typography>Fastest Delivery</Typography>
+            </Box>
+            <Box sx={{ marginRight: "20px" }}>
+              <MdSecurity fontSize="20px" />
+              <Typography>2 Year's Warranty</Typography>
+            </Box>
+          </Box>
+          <Typography variant="h5">
+            Available:
+            <span style={{ fontWeight: "bold" }}>
+              {" "}
+              {stock > 0 ? "In Stock" : "Not Available"}
+            </span>
+          </Typography>
+          <Typography variant="h5">
+            ID : <span style={{ fontWeight: "bold" }}> {id} </span>
+          </Typography>
+          <Typography variant="h5">
+            {" "}
+            Brand :<span style={{ fontWeight: "bold" }}> {company} </span>
+          </Typography>
+          <hr />
+          <br></br>
+          <AddToCart product={singleproduct} />
+          
+        </Box>
+      </Box>
+    </Box>
+  );
+};
 const Wrapper = styled.section`
   .container {
     padding: 9rem 0;
@@ -70,8 +177,8 @@ const Wrapper = styled.section`
     align-items: center;
   }
 
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 0 2.4rem;
+  @media (max-width: ${({ theme }) => theme.media}) {
+    padding: 0 2.4rem;mobile
   }
 `;
 

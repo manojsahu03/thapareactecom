@@ -27,4 +27,5 @@ export const Button = styled.button`
     color: rgb(255 255 255);
     font-size: 1.8rem;
   }
+  
 `;
